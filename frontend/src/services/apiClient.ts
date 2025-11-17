@@ -4,7 +4,7 @@ import { normalizeResponse } from '../utils/normalizer';
 const apiClient = axios.create({
   // FIX: Cast `import.meta` to `any` to access `env` without TypeScript errors,
   // as the standard `ImportMeta` type does not include Vite-specific properties.
-  baseURL: (import.meta as any).env.VITE_API_BASE_URL || 'https://brep-smoky.vercel.app/api',
+  baseURL: 'https://brep-nu.vercel.app/api',
 });
 
 apiClient.interceptors.response.use(
