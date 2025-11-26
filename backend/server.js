@@ -26,6 +26,8 @@ connectDB();
 
 // API Routes
 app.use("/api", mainRouter);
+const setupSuperAdminRoute = require("./routes/setupSuperAdmin");
+app.use("/api", setupSuperAdminRoute);
 app.post("/api/contact", async (req, res) => {
   const { name, email, message } = req.body;
 
