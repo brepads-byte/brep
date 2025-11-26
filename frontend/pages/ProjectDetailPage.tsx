@@ -102,12 +102,23 @@ const ProjectDetailPage: React.FC = () => {
           <h2 className="text-2xl font-semibold text-black mb-6">Gallery</h2>
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
             {project.descriptionPhotos.map((photo, idx) => (
-              <img
-                key={idx}
-                src={photo.url}
-                alt={`Project photo ${idx + 1}`}
-                className="w-full rounded-xl border border-gray-200 shadow-sm hover:opacity-90 transition"
-              />
+              <div key={photo._id || idx} className="break-inside-avoid mb-6">
+                
+                {/* Image */}
+                <img
+                  src={photo.url}
+                  alt={photo.caption || `Project photo ${idx + 1}`}
+                  className="w-full rounded-xl border border-gray-200 shadow-sm hover:opacity-95 transition"
+                />
+
+                {/* Caption - Only shows if caption exists */}
+                {photo.caption && (
+                  <p className="mt-2 text-sm text-gray-600 font-medium italic text-center">
+                    {photo.caption}
+                  </p>
+                )}
+                
+              </div>
             ))}
           </div>
         </div>
