@@ -5,10 +5,8 @@ const Admin = require("../models/Admin");
 const router = express.Router();
 
 /**
- * TEMPORARY ROUTE
- * Method: PUT
- * URL: /api/setup-super-admin
- * Description: Create a new super admin account (only for initial setup)
+ * PUT /api/setup-super-admin
+ * Create a new super admin (one-time setup)
  */
 router.put("/setup-super-admin", async (req, res) => {
   try {
@@ -18,7 +16,7 @@ router.put("/setup-super-admin", async (req, res) => {
       return res.status(400).json({ message: "Name, email, and password are required." });
     }
 
-    // Check if already exists
+    // Prevent duplicate super admins
     const existingAdmin = await Admin.findOne({ email });
     if (existingAdmin) {
       return res.status(400).json({ message: "Super admin already exists with this email." });
@@ -28,7 +26,7 @@ router.put("/setup-super-admin", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new super admin
+    // Create super admin
     const superAdmin = new Admin({
       name,
       email,
@@ -41,11 +39,11 @@ router.put("/setup-super-admin", async (req, res) => {
 
     await superAdmin.save();
 
-    const { password: _, ...adminWithoutPassword } = superAdmin.toObject();
+    const { password: _, ...response } = superAdmin.toObject();
 
     res.status(201).json({
       message: "✅ Super admin created successfully!",
-      admin: adminWithoutPassword,
+      admin: response,
     });
   } catch (error) {
     console.error("Error creating super admin:", error);
