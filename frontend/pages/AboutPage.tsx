@@ -3,45 +3,47 @@ import MailIcon from '../components/icons/MailIcon';
 import PhoneIcon from '../components/icons/PhoneIcon';
 import MapPinIcon from '../components/icons/MapPinIcon';
 import LinkedInIcon from '../components/icons/LinkedInIcon';
-
+import { getTeamMembers } from '../services/teamService';
+import { TeamMember } from '../src/types';
 const companyPhotos = [
   'https://picsum.photos/seed/company1/1600/900',
   'https://picsum.photos/seed/company2/1600/900',
   'https://picsum.photos/seed/company3/1600/900',
 ];
 
-const teamMembers = [
-  { name: 'John Doe', position: 'Lead Architect', img: 'https://picsum.photos/seed/team1/400/500' },
-  { name: 'Jane Smith', position: 'Interior Designer', img: 'https://picsum.photos/seed/team2/400/500' },
-  { name: 'Peter Jones', position: 'Project Manager', img: 'https://picsum.photos/seed/team3/400/500' },
-  { name: 'Maria Garcia', position: 'Structural Engineer', img: 'https://picsum.photos/seed/team4/400/500' },
-  { name: 'Sam Wilson', position: 'Landscape Architect', img: 'https://picsum.photos/seed/team5/400/500' },
-  { name: 'Linda Chen', position: 'Junior Architect', img: 'https://picsum.photos/seed/team6/400/500' },
-  { name: 'David Lee', position: 'Urban Planner', img: 'https://picsum.photos/seed/team7/400/500' },
-  { name: 'Susan White', position: 'CAD Specialist', img: 'https://picsum.photos/seed/team8/400/500' },
-];
+const fetchTeamData = async (setTeamMembers: (data: TeamMember[]) => void, setLoading: (status: boolean) => void) => {
+    try {
+        const data = await getTeamMembers();
+        setTeamMembers(data);
+    } catch (error) {
+        console.error("Error fetching team:", error);
+    } finally {
+        setLoading(false);
+    }
+};
 
-const TeamMemberCard: React.FC<{ member: typeof teamMembers[0] }> = ({ member }) => (
+const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => (
   <div className="text-center">
     <div className="relative group w-full aspect-[4/5] mb-4 overflow-hidden rounded-lg shadow-lg">
       <img 
-        src={member.img} 
+        src={member.photo.url} 
         alt={member.name} 
         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
         loading="lazy" 
         decoding="async" 
       />
       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-4">
-          <a href="#" aria-label="LinkedIn" className="text-white"><LinkedInIcon className="w-5 h-5" /></a>
-          <a href="#" aria-label="Email" className="text-white"><MailIcon className="w-5 h-5" /></a>
-        </div>
       </div>
     </div>
     <h3 className="font-bold text-lg">{member.name}</h3>
-    <p className="text-gray-600 text-sm">{member.position}</p>
+    <p className="text-gray-600 text-sm">{member.role}</p>
   </div>
 );
+
+/*
+
+
+*/
 
 const CompanyCarousel: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -72,6 +74,14 @@ const CompanyCarousel: React.FC = () => {
 };
 
 const AboutPage: React.FC = () => {
+
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchTeamData(setTeamMembers, setLoading);
+    }, []);
+
   return (
     <div className="bg-brand-white text-brand-black">
       {/* Hero Section */}
@@ -92,7 +102,7 @@ const AboutPage: React.FC = () => {
   {/* Right: Founder Image - 40% on large screens, hidden on smaller */}
   <div className="hidden lg:block relative w-2/5 h-full overflow-hidden">
     <img
-      src="https://picsum.photos/seed/founder/800/1200"
+      src="https://picsum.photos/seed/company1/1600/900"
       alt="Founder Alex Rivera"
       className="w-full h-full object-cover lg:[clip-path:polygon(40px_0,100%_0,100%_100%,0_100%)]"
       loading="lazy"
@@ -144,11 +154,11 @@ const AboutPage: React.FC = () => {
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-16 text-sm">
           <a href="#" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
               <MapPinIcon className="w-5 h-5 flex-shrink-0" />
-              <span>123 Architecture Lane, Metropolis</span>
+              <span>35B, Vadugan thottam, Nalliyampalayam, Thindal, Erode, Tamil Nadu 638012</span>
           </a>
           <a href="tel:+15551234567" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
               <PhoneIcon className="w-5 h-5 flex-shrink-0" />
-              <span>(555) 123-4567</span>
+              <span>(+91) 97904 44744</span>
           </a>
           <a href="mailto:contact@architectstudio.com" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
               <MailIcon className="w-5 h-5 flex-shrink-0" />

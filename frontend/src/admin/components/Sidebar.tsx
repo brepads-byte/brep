@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Briefcase, Users, UserCircle, LogOut } from 'lucide-react';
+import { LayoutDashboard, Briefcase, Users, UserCircle, LogOut,Contact } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
@@ -9,6 +9,7 @@ import clsx from 'clsx';
 const navItems = [
   { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
   { name: 'Projects', path: '/admin/projects', icon: Briefcase },
+  { name: 'Team', path: '/admin/team', icon: Contact },
   { name: 'Admins', path: '/admin/admins', icon: Users, role: 'super_admin' },
   { name: 'Profile', path: '/admin/profile', icon: UserCircle },
 ];

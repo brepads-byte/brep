@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getProjects } from '../services/projectService';
-import type { Project, Category } from '../types';
+import type { Project, Category } from '../src/types';
 import ProjectGrid from '../components/ProjectGrid';
 import ProjectFilters from '../components/ProjectFilters';
 import ProjectModal from '../components/ProjectModal';

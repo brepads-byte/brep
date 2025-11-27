@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProjects } from '../services/projectService';
-import type { Project } from '../types';
+import type { Project } from '../src/types';
 
 const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
