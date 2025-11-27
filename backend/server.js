@@ -8,12 +8,25 @@ const nodemailer = require("nodemailer");
 const app = express();
 
 // Middleware
-app.use(
+const cors = require('cors');
+
+// Make sure you don't have TWO app.use(cors(...)) statements.
+// Only use this one:
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://brep.co.in",
+    "https://www.brep.co.in",
+    "https://brep-nu.vercel.app"
+  ],
+  credentials: true
+}));
+/*app.use(
   cors({
     origin: "*", // Replace with your frontend URL
     credentials: true,
   })
-);
+);*/
 // cors({
 //   // origin: ["http://localhost:5173", "https://res.cloudinary.com","https://brep-arch.netlify.app/"], // Allow frontend dev server
 //   origin:["*"],
