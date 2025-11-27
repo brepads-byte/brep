@@ -33,10 +33,6 @@ const TeamMemberCard: React.FC<{ member: typeof teamMembers[0] }> = ({ member })
         decoding="async" 
       />
       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-4">
-          <a href="#" aria-label="LinkedIn" className="text-white"><LinkedInIcon className="w-5 h-5" /></a>
-          <a href="#" aria-label="Email" className="text-white"><MailIcon className="w-5 h-5" /></a>
-        </div>
       </div>
     </div>
     <h3 className="font-bold text-lg">{member.name}</h3>
