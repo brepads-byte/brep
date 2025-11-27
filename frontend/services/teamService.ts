@@ -1,6 +1,6 @@
 // src/services/teamService.ts
 import axios from 'axios';
-import { TeamMember } from '../';
+import { TeamMember } from '../src/types';
 
 // Check your .env for the correct port (usually 5000)
 const API_URL = 'http://localhost:5000/api/team'; 

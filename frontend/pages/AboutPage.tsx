@@ -22,7 +22,7 @@ const fetchTeamData = async (setTeamMembers: (data: TeamMember[]) => void, setLo
     }
 };
 
-const TeamMemberCard: React.FC<{ member: typeof teamMembers[0] }> = ({ member }) => (
+const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => (
   <div className="text-center">
     <div className="relative group w-full aspect-[4/5] mb-4 overflow-hidden rounded-lg shadow-lg">
       <img 

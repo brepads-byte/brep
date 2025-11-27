@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import type { Project, ProjectPhoto } from '../types';
+import type { Project, ProjectPhoto } from '../src/types';
 
 interface ProjectModalProps {
   project: Project | null;

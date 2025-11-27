@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { Project } from '../types';
+import type { Project } from '../src/types';
 import ProjectCard from './ProjectCard';
 import { useNavigate } from 'react-router-dom';
 

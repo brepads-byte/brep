@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { Category } from '../types';
+import type { Category } from '../src/types';
 
 interface ProjectFiltersProps {
   categories: (Category | 'all')[];
