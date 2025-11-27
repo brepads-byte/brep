@@ -3,29 +3,30 @@ import MailIcon from '../components/icons/MailIcon';
 import PhoneIcon from '../components/icons/PhoneIcon';
 import MapPinIcon from '../components/icons/MapPinIcon';
 import LinkedInIcon from '../components/icons/LinkedInIcon';
-
+import { getTeamMembers } from '../services/teamService';
+import { TeamMember } from '../src/types';
 const companyPhotos = [
   'https://picsum.photos/seed/company1/1600/900',
   'https://picsum.photos/seed/company2/1600/900',
   'https://picsum.photos/seed/company3/1600/900',
 ];
 
-const teamMembers = [
-  { name: 'John Doe', position: 'Lead Architect', img: 'https://picsum.photos/seed/team1/400/500' },
-  { name: 'Jane Smith', position: 'Interior Designer', img: 'https://picsum.photos/seed/team2/400/500' },
-  { name: 'Peter Jones', position: 'Project Manager', img: 'https://picsum.photos/seed/team3/400/500' },
-  { name: 'Maria Garcia', position: 'Structural Engineer', img: 'https://picsum.photos/seed/team4/400/500' },
-  { name: 'Sam Wilson', position: 'Landscape Architect', img: 'https://picsum.photos/seed/team5/400/500' },
-  { name: 'Linda Chen', position: 'Junior Architect', img: 'https://picsum.photos/seed/team6/400/500' },
-  { name: 'David Lee', position: 'Urban Planner', img: 'https://picsum.photos/seed/team7/400/500' },
-  { name: 'Susan White', position: 'CAD Specialist', img: 'https://picsum.photos/seed/team8/400/500' },
-];
+const fetchTeamData = async (setTeamMembers: (data: TeamMember[]) => void, setLoading: (status: boolean) => void) => {
+    try {
+        const data = await getTeamMembers();
+        setTeamMembers(data);
+    } catch (error) {
+        console.error("Error fetching team:", error);
+    } finally {
+        setLoading(false);
+    }
+};
 
 const TeamMemberCard: React.FC<{ member: typeof teamMembers[0] }> = ({ member }) => (
   <div className="text-center">
     <div className="relative group w-full aspect-[4/5] mb-4 overflow-hidden rounded-lg shadow-lg">
       <img 
-        src={member.img} 
+        src={member.photo.url} 
         alt={member.name} 
         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
         loading="lazy" 
@@ -39,9 +40,14 @@ const TeamMemberCard: React.FC<{ member: typeof teamMembers[0] }> = ({ member })
       </div>
     </div>
     <h3 className="font-bold text-lg">{member.name}</h3>
-    <p className="text-gray-600 text-sm">{member.position}</p>
+    <p className="text-gray-600 text-sm">{member.role}</p>
   </div>
 );
+
+/*
+
+
+*/
 
 const CompanyCarousel: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -72,6 +78,14 @@ const CompanyCarousel: React.FC = () => {
 };
 
 const AboutPage: React.FC = () => {
+
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchTeamData(setTeamMembers, setLoading);
+    }, []);
+
   return (
     <div className="bg-brand-white text-brand-black">
       {/* Hero Section */}
@@ -92,7 +106,7 @@ const AboutPage: React.FC = () => {
   {/* Right: Founder Image - 40% on large screens, hidden on smaller */}
   <div className="hidden lg:block relative w-2/5 h-full overflow-hidden">
     <img
-      src="https://picsum.photos/seed/founder/800/1200"
+      src="https://picsum.photos/seed/company1/1600/900"
       alt="Founder Alex Rivera"
       className="w-full h-full object-cover lg:[clip-path:polygon(40px_0,100%_0,100%_100%,0_100%)]"
       loading="lazy"
