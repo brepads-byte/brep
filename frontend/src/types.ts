@@ -1,10 +1,12 @@
+// Location: frontend/src/types.ts
 
+// --- PROJECT TYPES (Moved from outside) ---
 export type Category = 'residential' | 'commercial' | 'hospitality' | 'interiors';
 
 export interface ProjectPhoto {
   url: string;
   caption: string;
-  _id?: string; // optional id coming from server
+  _id?: string;
 }
 
 export interface Project {
@@ -18,4 +20,15 @@ export interface Project {
   descriptionPhotos: ProjectPhoto[];
   createdAt: string;
   updatedAt: string;
+}
+
+// --- TEAM TYPES (New) ---
+export interface TeamMember {
+  _id: string;
+  name: string;
+  role: string;
+  photo: {
+    url: string;
+    public_id: string;
+  };
 }

@@ -3,6 +3,7 @@ require("dotenv").config();
 const cors = require("cors");
 const connectDB = require("./config/db");
 const mainRouter = require("./routes");
+const teamRoutes = require('./routes/teamRoutes');
 const nodemailer = require("nodemailer");
 const app = express();
 
@@ -32,6 +33,7 @@ connectDB();
 app.use("/api", mainRouter);
 const setupSuperAdminRoute = require("./routes/setupSuperAdmin");
 app.use("/api", setupSuperAdminRoute);
+app.use('/api/team', teamRoutes);
 app.post("/api/contact", async (req, res) => {
   const { name, email, message } = req.body;
 

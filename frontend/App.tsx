@@ -20,6 +20,7 @@ import AdminProjectsListPage from './src/admin/pages/AdminProjectsListPage';
 import AdminProjectFormPage from './src/admin/pages/AdminProjectFormPage';
 import AdminManagementPage from './src/admin/pages/AdminManagementPage';
 import AdminProfilePage from './src/admin/pages/AdminProfilePage';
+import TeamManager from './src/admin/teammanager';
 
 const App: React.FC = () => {
   return (
@@ -72,6 +73,7 @@ const Main: React.FC = () => {
             <Route path="/admin/projects/:id" element={<ProjectDetailPage />} />
             <Route path="/admin/admins" element={<AdminManagementPage />} />
             <Route path="/admin/profile" element={<AdminProfilePage />} />
+            <Route path="/admin/team" element={<TeamManager />} />
           </Route>
         </Routes>
       </main>

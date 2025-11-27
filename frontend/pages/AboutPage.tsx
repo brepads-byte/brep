@@ -144,11 +144,11 @@ const AboutPage: React.FC = () => {
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-16 text-sm">
           <a href="#" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
               <MapPinIcon className="w-5 h-5 flex-shrink-0" />
-              <span>123 Architecture Lane, Metropolis</span>
+              <span>35B, Vadugan thottam, Nalliyampalayam, Thindal, Erode, Tamil Nadu 638012</span>
           </a>
           <a href="tel:+15551234567" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
               <PhoneIcon className="w-5 h-5 flex-shrink-0" />
-              <span>(555) 123-4567</span>
+              <span>(+91) 97904 44744</span>
           </a>
           <a href="mailto:contact@architectstudio.com" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
               <MailIcon className="w-5 h-5 flex-shrink-0" />
