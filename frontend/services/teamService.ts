@@ -1,29 +1,30 @@
 // src/services/teamService.ts
-import axios from 'axios';
-import apiClient from './apiClient';
+import apiClient from '../src/services/apiClient'; // ✅ Use your configured client
 import { TeamMember } from '../src/types';
 
-
 export const getTeamMembers = async (): Promise<TeamMember[]> => {
+  // ✅ CHANGE 1: Use apiClient
   const response = await apiClient.get('/team');
-  return response.data;
+  // ✅ CHANGE 2: Return 'response' directly. DO NOT use .data
+  return response as unknown as TeamMember[];
 };
 
 export const createTeamMember = async (formData: FormData) => {
-  const response = await axios.post(API_URL, formData, {
+  // ✅ CHANGE 3: Use apiClient instead of axios
+  const response = await apiClient.post('/team', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
-  return response.data;
+  return response; 
 };
 
 export const updateTeamMember = async (id: string, formData: FormData) => {
-  const response = await axios.put(`${API_URL}/${id}`, formData, {
+  const response = await apiClient.put(`/team/${id}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
-  return response.data;
+  return response;
 };
 
 export const deleteTeamMember = async (id: string) => {
-  const response = await axios.delete(`${API_URL}/${id}`);
-  return response.data;
+  const response = await apiClient.delete(`/team/${id}`);
+  return response;
 };
