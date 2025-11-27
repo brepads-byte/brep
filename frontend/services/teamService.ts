@@ -1,12 +1,11 @@
 // src/services/teamService.ts
 import axios from 'axios';
+import apiClient from './apiClient';
 import { TeamMember } from '../src/types';
 
-// Check your .env for the correct port (usually 5000)
-const API_URL = 'http://localhost:5000/api/team'; 
 
 export const getTeamMembers = async (): Promise<TeamMember[]> => {
-  const response = await axios.get(API_URL);
+  const response = await apiClient.get('/team');
   return response.data;
 };
 
