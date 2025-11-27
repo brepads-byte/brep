@@ -8,7 +8,6 @@ const nodemailer = require("nodemailer");
 const app = express();
 
 // Middleware
-const cors = require('cors');
 
 // Make sure you don't have TWO app.use(cors(...)) statements.
 // Only use this one:
