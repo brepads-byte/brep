@@ -1,26 +1,27 @@
-import apiClient from './apiClient';
-import type { Admin } from '../admin/types';
+// src/services/adminService.ts
+import apiClient from './apiClient'; 
+import { Admin } from '../admin/types'; // Adjust path if needed
 
+// ✅ List all admins
 export const listAdmins = async (): Promise<Admin[]> => {
-  return apiClient.get('/admins');
+  const response = await apiClient.get('/admins');
+  return response as unknown as Admin[]; // apiClient already returns data, don't use .data again
 };
 
-export const getAdmin = async (id: string): Promise<Admin> => {
-  return apiClient.get(`/admins/${id}`);
+// ✅ Create a new admin (POST)
+export const createAdmin = async (adminData: any) => {
+  const response = await apiClient.post('/admins', adminData);
+  return response;
 };
 
-export const createAdmin = async (adminData: Partial<Admin>): Promise<Admin> => {
-  return apiClient.post('/admins', adminData);
+// ✅ Update an admin (PUT)
+export const updateAdmin = async (id: string, updates: any) => {
+  const response = await apiClient.put(`/admins/${id}`, updates);
+  return response;
 };
 
-export const updateAdminProfile = async (adminData: Partial<Admin>): Promise<Admin> => {
-    return apiClient.put('/admins/profile', adminData);
-};
-
-export const updateAdmin = async (id: string, adminData: Partial<Admin>): Promise<Admin> => {
-  return apiClient.put(`/admins/${id}`, adminData);
-};
-
-export const deleteAdmin = async (id: string): Promise<{ message: string }> => {
-  return apiClient.delete(`/admins/${id}`);
+// ✅ Delete an admin (DELETE)
+export const deleteAdmin = async (id: string) => {
+  const response = await apiClient.delete(`/admins/${id}`);
+  return response;
 };
