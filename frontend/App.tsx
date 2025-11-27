@@ -20,7 +20,7 @@ import AdminProjectsListPage from './src/admin/pages/AdminProjectsListPage';
 import AdminProjectFormPage from './src/admin/pages/AdminProjectFormPage';
 import AdminManagementPage from './src/admin/pages/AdminManagementPage';
 import AdminProfilePage from './src/admin/pages/AdminProfilePage';
-import TeamManager from './src/admin/teammanager';
+import TeamManager from './src/admin/TeamManager';
 
 const App: React.FC = () => {
   return (
