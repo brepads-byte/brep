@@ -25,3 +25,16 @@ export const deleteAdmin = async (id: string) => {
   const response = await apiClient.delete(`/admins/${id}`);
   return response;
 };
+
+export const updateAdminProfile = async (profileData: Partial<Admin>) => {
+  // Matches Backend Route: PUT /api/admins/profile
+  const response = await apiClient.put('/admins/profile', profileData);
+  return response as unknown as Admin;
+};
+
+// 2. Change My Password
+export const changeAdminPassword = async (passwordData: any) => {
+  // Matches Backend Route: PUT /api/admins/profile/password
+  const response = await apiClient.put('/admins/profile/password', passwordData);
+  return response;
+};
