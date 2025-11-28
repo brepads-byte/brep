@@ -1,9 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const { login, verify } = require("../controllers/authController");
-const auth = require("../middleware/auth");
+
+// 👇 FIX: Destructure 'protect' from the middleware object
+const { protect } = require("../middleware/auth"); 
 
 router.post("/login", login);
-router.get("/verify", auth, verify);
+
+// 👇 Use 'protect' instead of 'auth'
+router.get("/verify", protect, verify);
 
 module.exports = router;
