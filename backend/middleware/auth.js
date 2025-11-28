@@ -1,26 +1,41 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
+const Admin = require('../models/Admin');
 
-const auth = async (req, res, next) => {
-  try {
-    const token = req.header("Authorization")?.replace("Bearer ", "");
+// 1. Check if user is logged in (Authentication)
+const protect = async (req, res, next) => {
+  let token;
 
-    if (!token) {
-      return res
-        .status(401)
-        .json({ message: "No authentication token, access denied" });
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      // Get admin data, exclude password
+      req.admin = await Admin.findById(decoded.id).select('-password');
+      
+      // Attach to req.user as well for compatibility
+      req.user = req.admin; 
+
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(401).json({ message: 'Not authorized, token failed' });
     }
+  }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    req.admin = {
-      id: decoded.id,
-    };
-
-    next();
-  } catch (error) {
-    console.error("Auth middleware error:", error);
-    res.status(401).json({ message: "Token is not valid" });
+  if (!token) {
+    res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
 
-module.exports = auth;
+// 2. Check if user is Super Admin (Authorization)
+const superAdmin = (req, res, next) => {
+  if (req.admin && req.admin.role === 'super_admin') {
+    next();
+  } else {
+    res.status(403).json({ message: 'Not authorized. Super Admin access required.' });
+  }
+};
+
+// Export both functions
+module.exports = { protect, superAdmin };
