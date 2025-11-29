@@ -39,7 +39,7 @@ const ContactPage: React.FC = () => {
                 <PhoneIcon className="w-6 h-6 mt-1 text-gray-700 flex-shrink-0" />
                 <div>
                     <h3 className="font-semibold text-lg">Call Us</h3>
-                    <a href="tel:+15551234567" className="text-gray-600 hover:text-black transition-colors">(+91) 97904 44744</a>
+                    <a href="tel:+919790444744" className="text-gray-600 hover:text-black transition-colors">(+91) 97904 44744</a>
                 </div>
              </div>
           </div>
