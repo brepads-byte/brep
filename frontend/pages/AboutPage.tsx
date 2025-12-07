@@ -25,12 +25,12 @@ const fetchTeamData = async (setTeamMembers: (data: TeamMember[]) => void, setLo
 const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => (
   <div className="text-center">
     <div className="relative group w-full aspect-[4/5] mb-4 overflow-hidden rounded-lg shadow-lg">
-      <img 
-        src={member.photo.url} 
-        alt={member.name} 
-        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
-        loading="lazy" 
-        decoding="async" 
+      <img
+        src={member.photo.url}
+        alt={member.name}
+        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+        decoding="async"
       />
       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
       </div>
@@ -126,12 +126,12 @@ const AboutPage: React.FC = () => {
             </p>
           </div>
           {/* Optional architectural lines design */}
-          <div className="hidden lg:block w-1/5 h-48 relative">
+          {/* <div className="hidden lg:block w-1/5 h-48 relative">
             <div className="absolute top-0 bottom-0 left-1/2 w-px bg-gray-300"></div>
             <div className="absolute top-8 bottom-8 left-1/4 w-px bg-gray-200"></div>
             <div className="absolute top-8 bottom-8 left-3/4 w-px bg-gray-200"></div>
             <div className="absolute top-1/2 left-0 right-0 h-px bg-gray-300"></div>
-          </div>
+          </div> */}
         </div>
       </section>
 

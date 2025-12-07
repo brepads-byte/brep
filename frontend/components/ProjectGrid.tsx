@@ -1,4 +1,3 @@
-
 import React from 'react';
 import type { Project } from '../src/types';
 import ProjectCard from './ProjectCard';
@@ -10,8 +9,9 @@ interface ProjectGridProps {
 
 const ProjectGrid: React.FC<ProjectGridProps> = ({ projects }) => {
   const navigate = useNavigate();
+
   return (
-    <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6">
+    <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 md:gap-8">
       {projects.map((project) => (
         <ProjectCard
           key={project._id}

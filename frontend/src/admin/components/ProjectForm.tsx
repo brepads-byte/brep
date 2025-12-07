@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -42,10 +40,22 @@ const categoryOptions = [
   { value: 'interiors', label: 'Interiors' },
 ];
 
+const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB in bytes
+
+const validateFile = (file: File): { valid: boolean; error?: string } => {
+  if (file.size > MAX_FILE_SIZE) {
+    return {
+      valid: false,
+      error: `File "${file.name}" exceeds 4MB limit. Size: ${(file.size / 1024 / 1024).toFixed(2)}MB`
+    };
+  }
+  return { valid: true };
+};
+
 export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
   const navigate = useNavigate();
   const isEditMode = !!project;
-  
+
   const [formData, setFormData] = useState({
     projectName: '',
     category: 'home',
@@ -56,7 +66,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
 
   const [mainPhoto, setMainPhoto] = useState<UploadableFile | null>(null);
   const [existingMainPhotoUrl, setExistingMainPhotoUrl] = useState<string | null>(null);
-  
+
   const [descriptionPhotos, setDescriptionPhotos] = useState<UploadableFile[]>([]);
   const [existingDescPhotos, setExistingDescPhotos] = useState<ProjectPhoto[]>([]);
 
@@ -75,7 +85,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
       setExistingDescPhotos(project.descriptionPhotos);
     }
   }, [project, isEditMode]);
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -85,8 +95,8 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
   const onDropMain = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length) {
       const file = acceptedFiles[0];
-      setMainPhoto({ 
-          file, 
+      setMainPhoto({
+          file,
           preview: URL.createObjectURL(file),
           caption: '', // not needed
           id: file.name + Date.now()
@@ -146,7 +156,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
         }
     }
   }
-  
+
   const removeNewDescPhoto = (id: string) => {
     setDescriptionPhotos(prev => prev.filter(p => p.id !== id));
   };
@@ -154,7 +164,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
   const removeExistingDescPhoto = (url: string) => {
     setExistingDescPhotos(prev => prev.filter(p => p.url !== url));
   };
-  
+
   const updateCaption = (id: string, caption: string, isExisting: boolean) => {
      if (isExisting) {
         setExistingDescPhotos(prev => prev.map(p => p.url === id ? { ...p, caption } : p));
@@ -167,35 +177,70 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const formPayload = new FormData();
-    formPayload.append('projectName', formData.projectName);
-    formPayload.append('category', formData.category);
-    formPayload.append('sqft', formData.sqft);
-    formPayload.append('location', formData.location);
-    formPayload.append('description', formData.description);
-
     try {
+      // Validate all files before uploading
+      if (mainPhoto) {
+        const validation = validateFile(mainPhoto.file);
+        if (!validation.valid) {
+          toast.error(validation.error!);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      for (const photo of descriptionPhotos) {
+        const validation = validateFile(photo.file);
+        if (!validation.valid) {
+          toast.error(validation.error!);
+          setIsLoading(false);
+          return;
+        }
+      }
+
       if (isEditMode && project) {
         // UPDATE LOGIC
+        // Upload main photo separately if new one is provided
         if (mainPhoto) {
-          formPayload.append('mainPhoto', mainPhoto.file);
+          const mainPayload = new FormData();
+          mainPayload.append('projectName', formData.projectName);
+          mainPayload.append('category', formData.category);
+          mainPayload.append('sqft', formData.sqft);
+          mainPayload.append('location', formData.location);
+          mainPayload.append('description', formData.description);
+          mainPayload.append('mainPhoto', mainPhoto.file);
+          await updateProject(project._id, mainPayload);
         }
 
-        descriptionPhotos.forEach(p => {
-          formPayload.append('descriptionPhotos', p.file);
-          // The backend will receive captions for new files in a separate meta field
-        });
-        
+        // Upload description photos one at a time
+        for (const photo of descriptionPhotos) {
+          const photoPayload = new FormData();
+          photoPayload.append('projectName', formData.projectName);
+          photoPayload.append('category', formData.category);
+          photoPayload.append('sqft', formData.sqft);
+          photoPayload.append('location', formData.location);
+          photoPayload.append('description', formData.description);
+          photoPayload.append('descriptionPhotos', photo.file);
+          await updateProject(project._id, photoPayload);
+        }
+
+        // Final metadata update
+        const formPayload = new FormData();
+        formPayload.append('projectName', formData.projectName);
+        formPayload.append('category', formData.category);
+        formPayload.append('sqft', formData.sqft);
+        formPayload.append('location', formData.location);
+        formPayload.append('description', formData.description);
+
         const updates = {
           existing: existingDescPhotos,
-          newCaptions: descriptionPhotos.map(p => p.caption),
+          newCaptions: [],
           removed: project.descriptionPhotos
             .filter(p_orig => !existingDescPhotos.some(p_exist => p_exist.url === p_orig.url))
             .map(p => p.url),
         };
         formPayload.append('updates', JSON.stringify(updates));
-
         await updateProject(project._id, formPayload);
+
         toast.success('Project updated successfully!');
       } else {
         // CREATE LOGIC
@@ -204,12 +249,30 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
           setIsLoading(false);
           return;
         }
-        formPayload.append('mainPhoto', mainPhoto.file);
-        descriptionPhotos.forEach(p => formPayload.append('descriptionPhotos', p.file));
-        const meta = { captions: descriptionPhotos.map(p => p.caption) };
-        formPayload.append('descriptionPhotosMeta', JSON.stringify(meta));
 
-        await createProject(formPayload);
+        // Send main photo first
+        const mainPayload = new FormData();
+        mainPayload.append('projectName', formData.projectName);
+        mainPayload.append('category', formData.category);
+        mainPayload.append('sqft', formData.sqft);
+        mainPayload.append('location', formData.location);
+        mainPayload.append('description', formData.description);
+        mainPayload.append('mainPhoto', mainPhoto.file);
+
+        const projectResponse = await createProject(mainPayload);
+
+        // Send description photos one at a time
+        for (const photo of descriptionPhotos) {
+          const photoPayload = new FormData();
+          photoPayload.append('projectName', formData.projectName);
+          photoPayload.append('category', formData.category);
+          photoPayload.append('sqft', formData.sqft);
+          photoPayload.append('location', formData.location);
+          photoPayload.append('description', formData.description);
+          photoPayload.append('descriptionPhotos', photo.file);
+          await updateProject(projectResponse._id, photoPayload);
+        }
+
         toast.success('Project created successfully!');
       }
       navigate('/admin/projects');
