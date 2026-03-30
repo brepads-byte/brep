@@ -1,13 +1,14 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Briefcase, Users, UserCircle, LogOut,Contact } from 'lucide-react';
+import { LayoutDashboard, Briefcase, Users, UserCircle, LogOut,Contact,Activity } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 
 const navItems = [
   { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+  { name: 'System Usage', path: '/admin/usage', icon: Activity , role : 'super_admin' },
   { name: 'Projects', path: '/admin/projects', icon: Briefcase },
   { name: 'Team', path: '/admin/team', icon: Contact },
   { name: 'Admins', path: '/admin/admins', icon: Users, role: 'super_admin' },
@@ -51,7 +52,7 @@ const Sidebar: React.FC<{ isOpen: boolean; setIsOpen: (isOpen: boolean) => void;
                 animate="visible"
                 className="text-xl font-bold tracking-wider whitespace-nowrap"
                >
-                 STUDIO ADMIN
+                 BREP ADMIN
                </motion.h1>
             </div>
             <nav className="flex-grow">
