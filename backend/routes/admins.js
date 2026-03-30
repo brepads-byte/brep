@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const {
   getAdmins,
   getAdminById,
@@ -9,6 +10,7 @@ const {
   getAdminProfile,
   updateAdminProfile,
   changePassword,
+  getUsageStats
 } = require("../controllers/adminController");
 
 // Import the middleware functions we defined in Step 1
@@ -19,6 +21,8 @@ const { protect, superAdmin } = require("../middleware/auth");
 router.get("/profile", protect, getAdminProfile);
 router.put("/profile", protect, updateAdminProfile);
 router.put("/profile/password", protect, changePassword);
+
+router.get("/usage-stats", protect, superAdmin ,getUsageStats);
 
 // --- 2. MANAGEMENT ROUTES (Restricted) ---
 

@@ -14,6 +14,7 @@ import ProjectDetailPage from './pages/ProjectDetailPage';
 import { AuthProvider } from './src/contexts/AuthContext';
 import AdminLoginPage from './src/admin/pages/AdminLoginPage';
 import PrivateRoute from './src/admin/components/PrivateRoute';
+import UsageDashboard from './src/admin/pages/UsageDashboard';
 import AdminLayout from './src/admin/components/AdminLayout';
 import AdminDashboardPage from './src/admin/pages/AdminDashboardPage';
 import AdminProjectsListPage from './src/admin/pages/AdminProjectsListPage';
@@ -74,6 +75,7 @@ const Main: React.FC = () => {
             <Route path="/admin/admins" element={<AdminManagementPage />} />
             <Route path="/admin/profile" element={<AdminProfilePage />} />
             <Route path="/admin/team" element={<TeamManager />} />
+            <Route path="/admin/usage" element={<UsageDashboard />} />
           </Route>
         </Routes>
       </main>
