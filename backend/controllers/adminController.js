@@ -2,7 +2,8 @@ const Admin = require("../models/Admin");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
-const DigestFetch = require("digest-fetch").default;
+const DigestFetch = require("digest-fetch");
+const nodeFetch = require("node-fetch");
 
 // Get all admins
 const getAdmins = async (req, res) => {
