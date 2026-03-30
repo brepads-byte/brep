@@ -1,26 +1,34 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   base: "./",
-  // 🌟 ADD THIS NEW BUILD CONFIGURATION SECTION 🌟
   build: {
-    // Uses the Terser minifier to optimize the production bundle
+    // 1. Existing Terser Optimization
     minify: 'terser', 
-    
     terserOptions: {
       compress: {
-        // 👇 This automatically strips ALL console.log statements 👇
         drop_console: true, 
         drop_debugger: true,
       },
-      // Optionally remove comments if you prefer
       format: {
         comments: false, 
       },
     },
+
+    // 2. NEW: Performance & Chunk Optimization for Vite 8
+    chunkSizeWarningLimit: 1000, // Raises the warning limit to 1MB
+    rolldownOptions: {
+      output: {
+        // This splits your heavy libraries (React, Framer Motion, etc.) 
+        // into a separate file so the main page loads faster.
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        },
+      },
+    },
   },
-  // 🌟 END OF NEW SECTION 🌟
 });
