@@ -93,14 +93,12 @@ app.get("/api/health-check", async (req, res) => {
 
   try {
     // Check Mongoose connection state: 1 = Connected
+    await Project.findOne().select("_id").lean();
     const dbStatus = mongoose.connection.readyState;
 
     if (dbStatus !== 1) {
       throw new Error("Database not connected");
     }
-
-    // Perform a quick query to ensure the "bridge" is actually working
-    await Project.findOne().select("_id").lean();
 
     healthStatus.database = "connected";
     res.status(200).json(healthStatus);
