@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getProjects } from '../services/projectService';
-import type { Project } from '../src/types';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getProjects } from "../services/projectService";
+import type { Project } from "../src/types";
 
 const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,14 +19,13 @@ const ProjectDetailPage: React.FC = () => {
   }, [id]);
 
   if (loading) return <div className="py-24 text-center">Loading...</div>;
-  if (!project) return <div className="py-24 text-center">Project not found.</div>;
+  if (!project)
+    return <div className="py-24 text-center">Project not found.</div>;
 
   return (
     <div className="container mx-auto px-0 md:px-6 pt-24 pb-16">
-
       {/* Top Section */}
       <div className="relative w-full">
-
         {/* Architectural Background */}
         <div className="absolute inset-0">
           <div
@@ -48,8 +47,8 @@ const ProjectDetailPage: React.FC = () => {
                   transparent 20px
                 )
               `,
-              backgroundSize: '40px 40px',
-              backgroundColor: '#f7f7f7',
+              backgroundSize: "40px 40px",
+              backgroundColor: "#f7f7f7",
             }}
           />
         </div>
@@ -57,12 +56,11 @@ const ProjectDetailPage: React.FC = () => {
         {/* Content */}
         <div className="relative container mx-auto px-6 md:px-12 pt-10 pb-16">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
-
             {/* Main Photo */}
             <div className="md:col-span-3 relative">
               <div className="bg-white border border-gray-200 shadow-lg overflow-hidden">
                 <img
-                  src={project.mainPhoto}
+                  src={project.mainPhoto?.url}
                   alt={project.projectName}
                   className="w-full h-full object-cover"
                 />
@@ -77,19 +75,19 @@ const ProjectDetailPage: React.FC = () => {
 
               <div className="space-y-3 text-sm text-gray-700 w-full">
                 <div>
-                  <span className="font-semibold text-black">Category:</span>{' '}
+                  <span className="font-semibold text-black">Category:</span>{" "}
                   {project.category}
                 </div>
 
                 {project.sqft && (
                   <div>
-                    <span className="font-semibold text-black">Sqft:</span>{' '}
+                    <span className="font-semibold text-black">Sqft:</span>{" "}
                     {project.sqft}
                   </div>
                 )}
 
                 <div>
-                  <span className="font-semibold text-black">Location:</span>{' '}
+                  <span className="font-semibold text-black">Location:</span>{" "}
                   {project.location}
                 </div>
               </div>
@@ -98,7 +96,6 @@ const ProjectDetailPage: React.FC = () => {
                 {project.description}
               </p>
             </div>
-
           </div>
         </div>
       </div>
@@ -107,31 +104,27 @@ const ProjectDetailPage: React.FC = () => {
       {project.descriptionPhotos?.length > 0 && (
         <div>
           <h2 className="text-2xl font-semibold text-black mb-6">Gallery</h2>
-
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
             {project.descriptionPhotos.map((photo, idx) => (
-              <div key={photo._id || idx} className="break-inside-avoid mb-6">
-
-                {/* Image */}
+              <div
+                key={photo.public_id || idx}
+                className="break-inside-avoid mb-6"
+              >
                 <img
-                  src={photo.url}
+                  src={photo.url} // ✅ This works because each photo in the array is an object
                   alt={photo.caption || `Project photo ${idx + 1}`}
                   className="w-full border border-gray-200 shadow-sm hover:opacity-95 transition"
                 />
-
-                {/* Caption */}
                 {photo.caption && (
                   <p className="mt-2 text-sm text-gray-600 font-medium italic text-center">
                     {photo.caption}
                   </p>
                 )}
-
               </div>
             ))}
           </div>
         </div>
       )}
-
     </div>
   );
 };

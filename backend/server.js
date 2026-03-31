@@ -4,6 +4,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const mainRouter = require("./routes");
 const teamRoutes = require('./routes/teamRoutes');
+const cloudinaryRoutes = require('./routes/cloudinaryRoutes');
 const nodemailer = require("nodemailer");
 const app = express();
 
@@ -46,6 +47,7 @@ app.use("/api", mainRouter);
 const setupSuperAdminRoute = require("./routes/setupSuperAdmin");
 app.use("/api", setupSuperAdminRoute);
 app.use('/api/team', teamRoutes);
+app.use('/api/cloudinary', cloudinaryRoutes);
 app.post("/api/contact", async (req, res) => {
   const { name, email, message } = req.body;
 

@@ -85,7 +85,7 @@ const AdminProjectsListPage: React.FC = () => {
                   {filteredProjects.map(project => (
                     <tr key={project._id} className="bg-white border-b hover:bg-gray-50">
                       <td className="px-6 py-4">
-                        <img src={project.mainPhoto} alt={project.projectName} className="h-10 w-16 object-cover rounded-md" />
+                        <img src={project.mainPhoto.url} alt={project.projectName} className="h-10 w-16 object-cover rounded-md" />
                       </td>
                       <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{project.projectName}</td>
                       <td className="px-6 py-4 capitalize">{project.category}</td>

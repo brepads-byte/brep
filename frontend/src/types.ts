@@ -1,10 +1,24 @@
-// Location: frontend/src/types.ts
+// frontend/src/types.ts
 
-// --- PROJECT TYPES (Moved from outside) ---
-export type Category = 'residential' | 'commercial' | 'hospitality' | 'interiors';
+// --- AUTH & ADMIN TYPES ---
+export interface Admin {
+  _id: string;
+  name: string;
+  email: string;
+  phoneNumber?: string;
+  location?: string;
+  role: 'admin' | 'super_admin';
+  avatar?: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
+// --- PROJECT TYPES ---
+export type Category = 'home' | 'commercial' | 'hospitality' | 'interiors';
 
 export interface ProjectPhoto {
   url: string;
+  public_id: string; // ✅ Required for Cloudinary Cleanup
   caption: string;
   _id?: string;
 }
@@ -14,15 +28,19 @@ export interface Project {
   projectName: string;
   category: Category;
   sqft?: string;
-  mainPhoto: string;
   location: string;
   description: string;
+  // ✅ Must be an object to match your new backend schema
+  mainPhoto: {
+    url: string;
+    public_id: string;
+  };
   descriptionPhotos: ProjectPhoto[];
   createdAt: string;
   updatedAt: string;
 }
 
-// --- TEAM TYPES (New) ---
+// --- TEAM TYPES ---
 export interface TeamMember {
   _id: string;
   name: string;
@@ -31,4 +49,20 @@ export interface TeamMember {
     url: string;
     public_id: string;
   };
+}
+
+// --- UPLOAD HELPER TYPES ---
+export interface UploadableFile {
+  file: File;
+  preview: string;
+  caption: string;
+  id: string; // Used for dnd-kit reordering
+}
+
+// --- CLOUDINARY HELPER ---
+export interface SignatureResponse {
+  signature: string;
+  timestamp: number;
+  cloudName: string;
+  apiKey: string;
 }

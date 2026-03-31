@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const connectDB = async () => {
   // Check if we already have an active connection
-  if (mongoose.connection.readyState >= 1) {
+  if (mongoose.connection.readyState >= 20) {
     console.log("✅ Using existing MongoDB connection");
     return;
   }

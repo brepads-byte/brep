@@ -5,7 +5,7 @@ import type { Project, Category } from '../src/types';
 import ProjectGrid from '../components/ProjectGrid';
 import ProjectFilters from '../components/ProjectFilters';
 
-const categories: (Category | 'all')[] = ['all', 'residential', 'commercial', 'hospitality', 'interiors'];
+const categories: (Category | 'all')[] = ['all', 'home', 'commercial', 'hospitality', 'interiors'];
 
 const ProjectsPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -25,7 +25,7 @@ const ProjectsPage: React.FC = () => {
   }, []);
 
   const filteredProjects = useMemo(() => {
-    const categoryToFilter = selectedCategory === 'residential' ? 'home' : selectedCategory;
+    const categoryToFilter = selectedCategory ;
     if (categoryToFilter === 'all') {
       return projects;
     }
