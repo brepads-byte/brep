@@ -80,7 +80,7 @@ const AdminDashboardPage: React.FC = () => {
               <ul className="space-y-4">
                 {recentProjects.map(p => (
                   <li key={p._id} className="flex items-center">
-                    <img src={p.mainPhoto} alt={p.projectName} className="h-12 w-12 rounded-md object-cover mr-4" />
+                    <img src={p.mainPhoto.url} alt={p.projectName} className="h-12 w-12 rounded-md object-cover mr-4" />
                     <div className="flex-1">
                       <p className="font-semibold">{p.projectName}</p>
                       <p className="text-sm text-gray-500">{p.location}</p>

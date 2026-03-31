@@ -38,7 +38,7 @@ const ProjectDetailPage: React.FC = () => {
       </div>
       
       <div className="bg-white p-6 rounded-lg shadow-sm border">
-        <img src={project.mainPhoto} alt={project.projectName} className="w-full h-auto max-h-[500px] object-cover rounded-lg mb-6" />
+        <img src={project.mainPhoto.url} alt={project.projectName} className="w-full h-auto max-h-[500px] object-cover rounded-lg mb-6" />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 text-sm">
             <div><strong className="block text-gray-500">Category</strong> <span className="capitalize">{project.category}</span></div>

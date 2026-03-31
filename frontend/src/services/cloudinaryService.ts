@@ -1,13 +1,7 @@
 import axios from 'axios';
 import apiClient from './apiClient';
+import { SignatureResponse } from '../types';
 
-// 1. Define the shape of the signature response
-interface SignatureResponse {
-  signature: string;
-  timestamp: number;
-  cloudName: string;
-  apiKey: string;
-}
 
 export const uploadToCloudinary = async (file: File) => {
   const MAX_SIZE = 8 * 1024 * 1024;
@@ -17,7 +11,7 @@ export const uploadToCloudinary = async (file: File) => {
 
   try {
     // 2. Tell TypeScript to expect the SignatureResponse shape
-    const signData = await apiClient.get<SignatureResponse>('/cloudinary/signature');
+    const { data: signData } = await apiClient.get<SignatureResponse>('/cloudinary/signature');
 
     const formData = new FormData();
     formData.append('file', file);
