@@ -1,10 +1,11 @@
 // Location: frontend/src/types.ts
 
-// --- PROJECT TYPES (Moved from outside) ---
+// --- PROJECT TYPES ---
 export type Category = 'residential' | 'commercial' | 'hospitality' | 'interiors';
 
 export interface ProjectPhoto {
   url: string;
+  public_id: string; // ✅ REQUIRED for Cloudinary deletion
   caption: string;
   _id?: string;
 }
@@ -12,17 +13,26 @@ export interface ProjectPhoto {
 export interface Project {
   _id: string;
   projectName: string;
-  category: Category;
+  category: 'home' | 'commercial' | 'hospitality' | 'interiors';
   sqft?: string;
-  mainPhoto: string;
   location: string;
   description: string;
-  descriptionPhotos: ProjectPhoto[];
+  // ✅ Must be an object for the payload to be valid
+  mainPhoto: {
+    url: string;
+    public_id: string;
+  };
+  descriptionPhotos: {
+    url: string;
+    public_id: string;
+    caption: string;
+    _id?: string;
+  }[];
   createdAt: string;
   updatedAt: string;
 }
 
-// --- TEAM TYPES (New) ---
+// --- TEAM TYPES ---
 export interface TeamMember {
   _id: string;
   name: string;
@@ -31,4 +41,12 @@ export interface TeamMember {
     url: string;
     public_id: string;
   };
+}
+
+// --- UPLOAD HELPER TYPES ---
+export interface UploadableFile {
+  file: File;
+  preview: string;
+  caption: string;
+  id: string; // Local unique ID for DnD-Kit reordering
 }

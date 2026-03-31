@@ -26,7 +26,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
       onClick={onClick}
     >
       <img
-        src={project.mainPhoto}
+        src={project.mainPhoto?.url}
         alt={project.projectName}
         className="
           w-full
