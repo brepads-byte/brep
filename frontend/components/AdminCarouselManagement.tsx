@@ -49,14 +49,14 @@ const AdminCarouselManager: React.FC = () => {
 
   const handleUploadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file || !order)
+    if (!file || order === null || order === undefined)
       return toast.error("Image file and order are required.");
 
     setUploading(true);
     const formData = new FormData();
     formData.append("image", file);
     formData.append("tagline", tagline); // Sends an empty string if nothing is typed
-    formData.append("order", String(order));
+    formData.append("order", order.toString());
 
     try {
       await apiClient.post("/carousel", formData, {
