@@ -152,17 +152,17 @@ const AboutPage: React.FC = () => {
       {/* Contact + Location Section */}
       <section className="py-12 md:py-16 bg-gray-50 border-t border-gray-200">
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-16 text-sm">
-          <a href="#" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
+          <a href="https://www.google.com/maps/place/Brep+Architecture+%2526+Design+Studio/@11.3221372,77.6796569,944m/data=!3m1!1e3!4m6!3m5!1s0x3ba96f7cd96754b5:0xc04d0a8697ab69bb!8m2!3d11.3221525!4d77.6822212!16s%252Fg%252F11nfv68mjq?entry=t" target="_blank" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
               <MapPinIcon className="w-5 h-5 flex-shrink-0" />
               <span>35B, Vadugan thottam, Nalliyampalayam, Thindal, Erode, Tamil Nadu 638012</span>
           </a>
-          <a href="tel:+15551234567" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
+          <a href="+9197904 44744" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
               <PhoneIcon className="w-5 h-5 flex-shrink-0" />
               <span>(+91) 97904 44744</span>
           </a>
-          <a href="mailto:contact@architectstudio.com" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
+          <a href="mailto:brep@ads.gmail.com" className="flex items-center space-x-3 text-gray-600 hover:text-black transition-colors">
               <MailIcon className="w-5 h-5 flex-shrink-0" />
-              <span>contact@architectstudio.com</span>
+              <span>brep@ads.gmail.com</span>
           </a>
         </div>
       </section>
