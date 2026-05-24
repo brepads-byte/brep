@@ -7,6 +7,8 @@ const teamRoutes = require("./routes/teamRoutes");
 const cloudinaryRoutes = require("./routes/cloudinaryRoutes");
 const nodemailer = require("nodemailer");
 const app = express();
+const carouselRoutes = require('./routes/carouselRoutes');
+
 
 // Middleware
 
@@ -35,6 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 // API Routes
+app.use('/api/carousel', carouselRoutes);
 app.use("/api", mainRouter);
 const setupSuperAdminRoute = require("./routes/setupSuperAdmin");
 app.use("/api", setupSuperAdminRoute);
@@ -78,7 +81,6 @@ app.post("/api/contact", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
-
 // 1. Move this to the TOP of your server.js with your other imports
 const Project = require("./models/Project");
 const mongoose = require("mongoose");

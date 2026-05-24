@@ -6,7 +6,7 @@ import apiClient from '../services/apiClient';
 interface AuthContextType {
   isAuthenticated: boolean;
   admin: Admin | null;
-  loading: boolean;
+  loading: boolean; 
   login: (email: string, pass: string) => Promise<void>;
   logout: () => void;
   setAdmin: (admin: Admin) => void;
