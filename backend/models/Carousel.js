@@ -5,7 +5,7 @@ const carouselSchema = new mongoose.Schema({
     url: { type: String, required: true },
     public_id: { type: String, required: true } // Absolute necessity for managing sync deletions
   },
-  tagline: { type: String, required: true },
+  tagline: { type: String, required: false },
   order: { type: Number, default: 0 }
 }, { timestamps: true });
 
