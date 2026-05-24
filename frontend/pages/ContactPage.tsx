@@ -1,5 +1,4 @@
 import React from 'react';
-import ContactForm from '../components/ContactForm';
 import MailIcon from '../components/icons/MailIcon';
 import PhoneIcon from '../components/icons/PhoneIcon';
 import MapPinIcon from '../components/icons/MapPinIcon';
@@ -8,53 +7,81 @@ const ContactPage: React.FC = () => {
   return (
     <div className="bg-brand-white text-brand-black">
       <div className="container mx-auto px-6 py-24 md:py-32">
-        <div className="text-center mb-16">
+        
+        {/* Top Header Block */}
+        <div className="text-center mb-20">
           <h1 className="text-4xl md:text-5xl font-bold">Get In Touch</h1>
-          <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            We'd love to hear about your project. Please fill out the form below or reach out to us directly.
+          <p className="mt-4 text-base text-gray-500 max-w-xl mx-auto font-light leading-relaxed">
+            We'd love to hear about your project. Reach out to us directly or visit our studio.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-          <div className="space-y-8">
-             <h2 className="text-3xl font-semibold border-b pb-4">Contact Information</h2>
-             
-             <div className="flex items-start gap-4">
-                <MapPinIcon className="w-6 h-6 mt-1 text-gray-700 flex-shrink-0" />
-                <div>
-                    <h3 className="font-semibold text-lg">Our Studio</h3>
-                    <p className="text-gray-600">35B, Vadugan thottam, Nalliyampalayam, Thindal, Erode, Tamil Nadu 638012</p>
-                </div>
-             </div>
+        {/* ✅ FIXED: Layout transformed from split columns to a clean, centered stack */}
+        <div className="max-w-2xl mx-auto flex flex-col items-center text-center space-y-12">
+          
+          <h2 className="text-2xl font-semibold tracking-wide uppercase text-sm border-b pb-2 px-6 border-gray-200">
+            Contact Information
+          </h2>
+          
+          {/* Info Blocks Row Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 w-full pt-4">
+            
+            {/* 📍 Our Studio */}
+            <div className="flex flex-col items-center space-y-3">
+              <div className="p-3 bg-neutral-50 rounded-full border border-neutral-100">
+                <MapPinIcon className="w-5 h-5 text-gray-700" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-1">Our Studio</h3>
+                <p className="text-xs text-gray-500 leading-relaxed max-w-[200px] mx-auto">
+                  35B, Vadugan thottam,<br />
+                  Nalliyampalayam, Thindal,<br />
+                  Erode, TN 638012
+                </p>
+              </div>
+            </div>
 
-             <div className="flex items-start gap-4">
-                <MailIcon className="w-6 h-6 mt-1 text-gray-700 flex-shrink-0" />
-                <div>
-                    <h3 className="font-semibold text-lg">Email Us</h3>
-                    <a href="mailto:contact@architectstudio.com" className="text-gray-600 hover:text-black transition-colors">contact@architectstudio.com</a>
-                </div>
-             </div>
+            {/* ✉️ Email Channel */}
+            <div className="flex flex-col items-center space-y-3">
+              <div className="p-3 bg-neutral-50 rounded-full border border-neutral-100">
+                <MailIcon className="w-5 h-5 text-gray-700" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-1">Email Us</h3>
+                <a 
+                  href="mailto:brep.ads@gmail.com" 
+                  className="text-xs text-gray-500 hover:text-black transition-colors underline underline-offset-4"
+                >
+                  brep.ads@gmail.com
+                </a>
+              </div>
+            </div>
 
-             <div className="flex items-start gap-4">
-                <PhoneIcon className="w-6 h-6 mt-1 text-gray-700 flex-shrink-0" />
-                <div>
-                    <h3 className="font-semibold text-lg">Call Us</h3>
-                    <a href="tel:+919790444744" className="text-gray-600 hover:text-black transition-colors">(+91) 97904 44744</a>
-                </div>
-             </div>
-          </div>
+            {/* 📞 Direct Line */}
+            <div className="flex flex-col items-center space-y-3">
+              <div className="p-3 bg-neutral-50 rounded-full border border-neutral-100">
+                <PhoneIcon className="w-5 h-5 text-gray-700" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-base mb-1">Call Us</h3>
+                <a 
+                  href="tel:+919790444744" 
+                  className="text-xs text-gray-500 hover:text-black transition-colors font-medium"
+                >
+                  (+91) 97904 44744
+                </a>
+              </div>
+            </div>
 
-          <div>
-            <h2 className="text-3xl font-semibold mb-8 border-b pb-4">Send Us a Message</h2>
-            <ContactForm />
           </div>
         </div>
       </div>
       
-      <section className="w-full h-96">
+      {/* Interactive Geolocation Viewport Map Frame */}
+      <section className="w-full h-96 border-t border-gray-100">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3912.1716992286424!2d77.67964627452385!3d11.322157748891696!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba96f7cd96754b5%3A0xc04d0a8697ab69bb!2sBrep%20Architecture%20%26%20Design%20Studio!5e0!3m2!1sen!2sin!4v1764238843544!5m2!1sen!2sin"
-          className="w-full h-full border-0"
+          className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-700"
           allowFullScreen={false}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
