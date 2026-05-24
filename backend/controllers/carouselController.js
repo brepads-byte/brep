@@ -1,7 +1,7 @@
 const Carousel = require('../models/Carousel');
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const CloudinaryStorage = require('multer-storage-cloudinary');
 
 // 1. Configure Cloudinary Storage Staging Parameters
 const storage = new CloudinaryStorage({
