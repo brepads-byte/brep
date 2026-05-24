@@ -76,11 +76,8 @@ const Navbar: React.FC = () => {
         )}
         {/* Social Icons */}
         <div className="hidden md:flex items-center space-x-4">
-          <a href="#" aria-label="Instagram" className="hover:opacity-75 transition-opacity">
+          <a href="https://www.instagram.com/brep.ad" target='_blank' aria-label="Instagram" className="hover:opacity-75 transition-opacity">
             <InstagramIcon />
-          </a>
-          <a href="#" aria-label="LinkedIn" className="hover:opacity-75 transition-opacity">
-            <LinkedInIcon />
           </a>
         </div>
       </div>
