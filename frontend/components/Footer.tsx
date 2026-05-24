@@ -1,7 +1,6 @@
 
 import React from 'react';
 import InstagramIcon from './icons/InstagramIcon';
-import LinkedInIcon from './icons/LinkedInIcon';
 
 const Footer: React.FC = () => {
   return (
@@ -11,11 +10,8 @@ const Footer: React.FC = () => {
           © {new Date().getFullYear()} Architecture Studio. All Rights Reserved.
         </p>
         <div className="flex items-center space-x-6">
-          <a href="#" aria-label="Instagram" className="text-gray-600 hover:text-brand-black transition-colors">
+          <a href="https://www.instagram.com/brep.ad" target='_blank' aria-label="Instagram" className="text-gray-600 hover:text-brand-black transition-colors">
             <InstagramIcon />
-          </a>
-          <a href="#" aria-label="LinkedIn" className="text-gray-600 hover:text-brand-black transition-colors">
-            <LinkedInIcon />
           </a>
         </div>
       </div>
