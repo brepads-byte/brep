@@ -49,10 +49,10 @@ const ContactPage: React.FC = () => {
               <div>
                 <h3 className="font-semibold text-base mb-1">Email Us</h3>
                 <a 
-                  href="mailto:contact@architectstudio.com" 
+                  href="mailto:brep.ads@gmail.com" 
                   className="text-xs text-gray-500 hover:text-black transition-colors underline underline-offset-4"
                 >
-                  contact@architectstudio.com
+                  brep.ads@gmail.com
                 </a>
               </div>
             </div>
