@@ -21,18 +21,25 @@ const createProject = async (req, res) => {
 
 /**
  * @desc Get all projects
+ * @route GET /api/projects
  */
 const getProjects = async (req, res) => {
   try {
-    const projects = await Project.find().sort({ createdAt: -1 });
+    const projects = await Project.find()
+      .select("-descriptionPhotos -description") // ⚡ Projection optimization filter
+      .sort({ createdAt: -1 });
+      
     res.json(projects);
   } catch (err) {
+    console.error('Get Projects List Error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
 /**
  * @desc Get single project
+ * @route GET /api/projects/:id
+ * ✅ RICH PAYLOAD: Keeps all data fields completely intact for the deep detail view.
  */
 const getProjectById = async (req, res) => {
   try {
@@ -40,6 +47,7 @@ const getProjectById = async (req, res) => {
     if (!project) return res.status(404).json({ message: 'Project not found' });
     res.json(project);
   } catch (err) {
+    console.error('Get Project By ID Error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
