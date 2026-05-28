@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProjects } from "../services/projectService";
+import { getProjectById } from "../services/projectService";
 import type { Project } from "../src/types";
 
 const ProjectDetailPage: React.FC = () => {
@@ -11,7 +11,7 @@ const ProjectDetailPage: React.FC = () => {
   // ✅ Hooks are now properly placed inside the functional component
   const [selectedPhoto, setSelectedPhoto] = useState<{ url: string; caption?: string } | null>(null);
   const [isZoomedIn, setIsZoomedIn] = useState(false);
-
+/*
   useEffect(() => {
     const fetchProject = async () => {
       const projects = await getProjects();
@@ -21,7 +21,21 @@ const ProjectDetailPage: React.FC = () => {
     };
     fetchProject();
   }, [id]);
-
+*/
+useEffect(() => {
+  const fetchSingleProject = async () => {
+    if (!id) return;
+    setLoading(true);
+    
+    // Calls the targeted endpoint /api/projects/:id directly!
+    const data = await getProjectById(id);
+    
+    setProject(data);
+    setLoading(false);
+  };
+  
+  fetchSingleProject();
+}, [id]);
   if (loading) return <div className="py-24 text-center">Loading...</div>;
   if (!project) return <div className="py-24 text-center">Project not found.</div>;
 
