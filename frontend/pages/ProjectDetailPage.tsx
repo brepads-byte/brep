@@ -30,7 +30,7 @@ const ProjectDetailPage: React.FC = () => {
       {/* Top Section */}
       <div className="relative w-full">
         {/* Architectural Background */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 hidden md:block">
           <div
             className="w-full h-full opacity-5"
             style={{
@@ -57,22 +57,22 @@ const ProjectDetailPage: React.FC = () => {
         </div>
 
         {/* Content */}
-        <div className="relative container mx-auto px-6 md:px-12 pt-10 pb-16">
+        <div className="relative container mx-auto px-0 md:px-12 pt-10 pb-16">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
             {/* Main Photo */}
             <div className="md:col-span-3 relative">
-              <div className="bg-white border border-gray-200 shadow-lg overflow-hidden">
+              <div className="bg-white border-0 md:bordershadow-none md:shadow-lg overflow-hidden">
                 <img
                   src={project.mainPhoto?.url}
                   alt={project.projectName}
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto md:h-full object-cover"
                 />
               </div>
             </div>
 
             {/* Project Info */}
-            <div className="md:col-span-2 flex flex-col items-start mt-3">
-              <h1 className="text-2xl font-bold text-black mb-6">
+            <div className="md:col-span-2 flex flex-col items-start mt-6 md:mt-3 px-6 md:px-0">
+              <h1 className="text-2xl md:text-3xl font-bold text-black mb-4 md:mb-6">
                 {project.projectName}
               </h1>
 
@@ -104,15 +104,21 @@ const ProjectDetailPage: React.FC = () => {
       </div>
 
       {/* Gallery Section */}
+      {/* Gallery Section */}
       <div className="container mx-auto px-0 md:px-6">
         {project.descriptionPhotos?.length > 0 && (
-          <div className="px-6 md:px-12 mt-12">
-            <h2 className="text-xl font-semibold text-black mb-6">Gallery</h2>
-            <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
+          // ✅ FIX 1: Changed px-6 to px-0 on mobile so the grid columns touch the screen edges.
+          // The title "Gallery" keeps a px-6 indentation so it stays aligned with your text content.
+          <div className="px-0 md:px-12 mt-12">
+            <h2 className="text-xl font-semibold text-black mb-6 px-6 md:px-0">Gallery</h2>
+            
+            {/* ✅ FIX 2: Changed gap-4 to gap-0 on mobile to remove gaps between stacked mobile photos */}
+            <div className="columns-1 sm:columns-2 md:columns-3 gap-0 sm:gap-4 space-y-0 sm:space-y-4">
               {project.descriptionPhotos.map((photo, idx) => (
                 <div
                   key={photo.public_id || idx}
-                  className="break-inside-avoid mb-6 group relative overflow-hidden bg-gray-50 border border-gray-200 shadow-sm rounded-sm"
+                  // ✅ FIX 3: Removed mb-6, shadows, and rounded borders on mobile so they stack perfectly flush
+                  className="break-inside-avoid mb-0 sm:mb-6 group relative overflow-hidden bg-gray-50 border-b sm:border border-gray-200/50 sm:border-gray-200 shadow-none md:shadow-sm rounded-none md:rounded-sm"
                 >
                   {/* Image Container */}
                   <div className="relative overflow-hidden">
@@ -137,66 +143,15 @@ const ProjectDetailPage: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* ✅ FIX 4: Kept the captions neatly padded internally so text doesn't hit the screen borders */}
                   {photo.caption && (
-                    <p className="p-3 text-xs text-gray-600 font-medium italic text-justify">
+                    <p className="p-4 sm:p-3 text-xs text-gray-600 font-medium italic text-justify bg-white">
                       {photo.caption}
                     </p>
                   )}
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* Lightbox Modal Layer */}
-        {selectedPhoto && (
-          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm p-4">
-            
-            {/* Top Control Bar */}
-            <div className="absolute top-4 right-4 flex items-center gap-6 z-50">
-              <button
-                type="button"
-                onClick={() => setIsZoomedIn(!isZoomedIn)}
-                className="text-white/70 hover:text-white text-xs uppercase tracking-widest transition"
-              >
-                {isZoomedIn ? "Zoom Out" : "Zoom In"}
-              </button>
-              
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedPhoto(null);
-                  setIsZoomedIn(false);
-                }}
-                className="text-white/70 hover:text-white text-2xl font-light p-2 transition-transform duration-200 hover:rotate-90"
-                aria-label="Close interactive modal"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Lightbox Active Image Frame */}
-            <div 
-              className={`relative max-w-5xl max-h-[80vh] transition-all duration-300 ease-out select-none ${
-                isZoomedIn ? "overflow-auto cursor-zoom-out" : "overflow-hidden cursor-zoom-in"
-              }`}
-              onClick={() => setIsZoomedIn(!isZoomedIn)}
-            >
-              <img
-                src={selectedPhoto.url}
-                alt={selectedPhoto.caption || "Expanded view"}
-                className={`max-w-full max-h-[80vh] object-contain transition-transform duration-300 ${
-                  isZoomedIn ? "scale-[1.6] max-h-none my-12" : "scale-100"
-                }`}
-              />
-            </div>
-
-            {/* Caption Display */}
-            {selectedPhoto.caption && !isZoomedIn && (
-              <p className="mt-4 text-xs text-gray-400 max-w-2xl text-center italic transition-opacity">
-                {selectedPhoto.caption}
-              </p>
-            )}
           </div>
         )}
       </div>
