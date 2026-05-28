@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom'; // ✅ Added Link here
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 
@@ -47,16 +46,30 @@ const AdminLoginPage: React.FC = () => {
             required 
             autoComplete="email"
           />
-          <Input 
-            label="Password" 
-            type="password" 
-            name="password"
-            value={password} 
-            onChange={e => setPassword(e.target.value)} 
-            required 
-            autoComplete="current-password"
-          />
+          
+          <div className="relative">
+            <Input 
+              label="Password" 
+              type="password" 
+              name="password"
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              required 
+              autoComplete="current-password"
+            />
+            {/* 🔥 NEW: Forgot Password Link right under the text input view boundary */}
+            <div className="flex justify-end mt-1">
+              <Link 
+                to="/forgot-password" 
+                className="text-xs text-gray-400 hover:text-black hover:underline transition-all"
+              >
+                Forgot Password?
+              </Link>
+            </div>
+          </div>
+
           {error && <p className="text-sm text-red-500">{error}</p>}
+          
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </Button>
