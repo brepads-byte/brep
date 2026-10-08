@@ -47,11 +47,20 @@ exports.createSlide = async (req, res) => {
       return res.status(400).json({ message: 'Image file attachment is required.' });
     }
     
-    // 🚀 Execute the Cloudinary stream upload and WAIT for it to finish
-    const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
-    
-    // Read 'tagline' from request body
+    // Read 'tagline' and 'order' from request body
     const { tagline, order } = req.body;
+    const requestedOrder = (order !== undefined && order !== null && order !== '') ? Number(order) : 0;
+
+    // 🚨 NEW DUPLICATE CHECK: Make sure the order number isn't taken!
+    const existingSlide = await Carousel.findOne({ order: requestedOrder });
+    if (existingSlide) {
+      return res.status(400).json({ 
+        message: `A slide with index ${requestedOrder} already exists. Please choose a different number.` 
+      });
+    }
+
+    // 🚀 Execute the Cloudinary stream upload ONLY if the index is available
+    const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
     
     const newSlide = new Carousel({
       image: {
@@ -59,17 +68,24 @@ exports.createSlide = async (req, res) => {
         public_id: cloudinaryResult.public_id // The public asset tracker id
       },
       tagline : tagline || '',
-      order: (order !== undefined && order !== null && order !== '') ? Number(order) : 0
+      order: requestedOrder
     });
 
     await newSlide.save();
     res.status(201).json(newSlide);
   } catch (error) {
     console.error("Carousel Upload Error:", error);
+    
+    // 🚨 FIX: Catch MongoDB's native duplicate key error!
+    if (error.code === 11000) {
+      return res.status(400).json({ 
+        message: "This position number is already taken! Please choose a different order number." 
+      });
+    }
+
     res.status(500).json({ message: error.message });
   }
 };
-
 // 4. Purge target data segments across Cloudinary and MongoDB
 exports.deleteSlide = async (req, res) => {
   try {

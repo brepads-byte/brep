@@ -69,10 +69,15 @@ const AdminCarouselManager: React.FC = () => {
         "";
       fetchSlides();
     } catch (error: any) {
-      toast.error(
-        error.response?.data?.message ||
-          "Access Denied: Admin confirmation validation failed."
-      );
+      // 1. Try to grab our beautiful custom message from the Node.js backend
+      const backendMessage = error.response?.data?.message || error.response?.data?.error;
+      
+      // 2. If the backend didn't send one (e.g., your internet dropped or CORS error), 
+      // grab the raw system error message instead of a generic fallback!
+      const finalMessage = backendMessage || error.message || "Upload failed.";
+        
+      // 3. Push it STRAIGHT to the toast popup!
+      toast.error(finalMessage);
     } finally {
       setUploading(false);
     }

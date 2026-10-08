@@ -10,32 +10,22 @@ const ProjectDetailPage: React.FC = () => {
 
   // ✅ Hooks are now properly placed inside the functional component
   const [selectedPhoto, setSelectedPhoto] = useState<{ url: string; caption?: string } | null>(null);
-  const [isZoomedIn, setIsZoomedIn] = useState(false);
-/*
+
   useEffect(() => {
-    const fetchProject = async () => {
-      const projects = await getProjects();
-      const found = projects.find((p) => p._id === id);
-      setProject(found || null);
+    const fetchSingleProject = async () => {
+      if (!id) return;
+      setLoading(true);
+      
+      // Calls the targeted endpoint /api/projects/:id directly!
+      const data = await getProjectById(id);
+      
+      setProject(data);
       setLoading(false);
     };
-    fetchProject();
+    
+    fetchSingleProject();
   }, [id]);
-*/
-useEffect(() => {
-  const fetchSingleProject = async () => {
-    if (!id) return;
-    setLoading(true);
-    
-    // Calls the targeted endpoint /api/projects/:id directly!
-    const data = await getProjectById(id);
-    
-    setProject(data);
-    setLoading(false);
-  };
-  
-  fetchSingleProject();
-}, [id]);
+
   if (loading) return <div className="py-24 text-center">Loading...</div>;
   if (!project) return <div className="py-24 text-center">Project not found.</div>;
 
@@ -118,7 +108,6 @@ useEffect(() => {
       </div>
 
       {/* Gallery Section */}
-      {/* Gallery Section */}
       <div className="container mx-auto px-0 md:px-6">
         {project.descriptionPhotos?.length > 0 && (
           // ✅ FIX 1: Changed px-6 to px-0 on mobile so the grid columns touch the screen edges.
@@ -147,8 +136,8 @@ useEffect(() => {
                       <button
                         type="button"
                         onClick={() => {
+                          // Cleaned up the click handler to just set the photo
                           setSelectedPhoto({ url: photo.url, caption: photo.caption });
-                          setIsZoomedIn(false);
                         }}
                         className="bg-white/90 hover:bg-white text-black font-medium text-xs py-2 px-4 shadow-md transition-all uppercase tracking-wider rounded-sm transform translate-y-2 group-hover:translate-y-0 duration-300"
                       >
@@ -169,6 +158,38 @@ useEffect(() => {
           </div>
         )}
       </div>
+
+      {/* 🔍 THE MISSING ZOOM MODAL */}
+      {selectedPhoto && (
+        <div 
+          className="fixed inset-0 bg-black/95 flex flex-col items-center justify-center z-[9999] p-4 sm:p-8"
+          onClick={() => setSelectedPhoto(null)} // Clicking the background closes it
+        >
+          {/* Close Button */}
+          <button 
+            className="absolute top-6 right-6 text-white text-4xl hover:text-gray-300 transition-colors cursor-pointer"
+            onClick={() => setSelectedPhoto(null)}
+          >
+            &times;
+          </button>
+
+          {/* Zoomed Image */}
+          <img 
+            src={selectedPhoto.url} 
+            alt={selectedPhoto.caption || "Zoomed project photo"} 
+            className="max-w-full max-h-[80vh] md:max-h-[90vh] object-contain shadow-2xl"
+            onClick={(e) => e.stopPropagation()} // Prevents clicking the image from closing the modal
+          />
+
+          {/* Caption (if it exists) */}
+          {selectedPhoto.caption && (
+            <p className="text-white mt-6 text-sm md:text-base max-w-3xl text-center italic px-4">
+              {selectedPhoto.caption}
+            </p>
+          )}
+        </div>
+      )}
+
     </div>
   );
 };

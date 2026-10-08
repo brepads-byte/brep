@@ -60,15 +60,39 @@ const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
     
-    // We simply find the project and update it with the new data
-    // The "merging" logic now happens on the Frontend (Netlify)
+    // 1. Fetch the OLD project state before doing anything
+    const existingProject = await Project.findById(id);
+    if (!existingProject) return res.status(404).json({ message: 'Project not found' });
+
+    // 2. Cleanup Main Photo: If the public_id changed, destroy the old one
+    const oldMainId = existingProject.mainPhoto?.public_id;
+    const newMainId = req.body.mainPhoto?.public_id;
+    
+    if (oldMainId && oldMainId !== newMainId) {
+      await cloudinary.uploader.destroy(oldMainId);
+    }
+
+    // 3. Cleanup Description Photos: Find photos that exist in the DB but are missing from req.body
+    const oldDescPhotos = existingProject.descriptionPhotos || [];
+    const newDescPhotos = req.body.descriptionPhotos || [];
+    const newDescIds = newDescPhotos.map(photo => photo.public_id); // Array of new IDs
+
+    // Filter out the ones that got deleted by the user
+    const photosToDelete = oldDescPhotos.filter(oldPhoto => !newDescIds.includes(oldPhoto.public_id));
+
+    // Destroy all orphaned description photos simultaneously
+    if (photosToDelete.length > 0) {
+      await Promise.all(
+        photosToDelete.map(photo => cloudinary.uploader.destroy(photo.public_id))
+      );
+    }
+
+    // 4. Now that Cloudinary is clean, update MongoDB with the new data
     const updatedProject = await Project.findByIdAndUpdate(
       id, 
       req.body, 
       { new: true, runValidators: true }
     );
-
-    if (!updatedProject) return res.status(404).json({ message: 'Project not found' });
 
     res.json(updatedProject);
   } catch (err) {
